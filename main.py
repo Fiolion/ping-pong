@@ -1,38 +1,79 @@
-from pygame import *
-from random import *
-window = display.set_mode((700, 500))
-display.set_caption("ping-pong")
+import turtle
 
-clock = time.Clock()
-FPS = 60
+window = turtle.Screen()
+window.title("Ping-Pong")
+window.setup(width=700,height=500)
+window.bgcolor("black")
 
-class GameSprite(sprite.Sprite):
-    def __init__(self, player_image, player_x, player_y, player_speed):
-        super().__init__()
-        self.image = transform.scale(image.load(player_image), (65, 65))
-        self.speed = player_speed
-        self.rect = self.image.get_rect()
-        self.rect.x = player_x
-        self.rect.y = player_y
-    def reset(self):
-        window.blit(self.image, (self.rect.x, self.rect.y))
+border = turtle.Turtle()
+border.speed(0)
+border.color('black')
+border.begin_fill()
+border.goto(-250,150)
+border.goto(250,150)
+border.goto(250,-150)
+border.goto(-250,-150)
+border.goto(-250,150)
+border.end_fill()
 
-class Player(GameSprite):
-   def update(self):
-       keys = key.get_pressed()
-       if keys[K_a]:
-           self.rect.x -= self.speed
-       if keys[K_d]:
-           self.rect.x += self.speed
+border.goto(0,300)
+border.color('white')
+border.setheading(270)
+for i in range(25):
+    if i%2==0:
+        border.forward(24)
+    else:
+        border.up()
+        border.forward(24)
+        border.down()
+border.hideturtle()
+
+rocket_a = turtle.Turtle()
+rocket_a.color('white')
+rocket_a.shape('square')
+rocket_a.shapesize(stretch_len=1,stretch_wid=7)
+rocket_a.penup()
+rocket_a.goto(-350,0)
+
+rocket_b = turtle.Turtle()
+rocket_b.speed(3)
+rocket_b.shape("square")
+rocket_b.color("white")
+rocket_b.shapesize(stretch_wid=7, stretch_len=1)
+rocket_b.penup()
+rocket_b.goto(344, 0)
+
+def move_up():
+     y  = rocket_a.ycor() + 10
+     if y > 250:
+         y = 250
+     rocket_a.sety(y)
 
 
+def move_down():
+    y = rocket_a.ycor() - 10
+    if y < -250:
+        y = -250
+    rocket_a.sety(y)
 
-game = True
-while game:
-    for e in event.get():
-        if e.type == QUIT:
-            game = False
+
+def move_up_b():
+    y = rocket_b.ycor() + 10
+    if y > 250:
+        y = 250
+    rocket_b.sety(y)
 
 
-    display.update() 
-    clock.tick(FPS)
+def move_down_b():
+    y = rocket_b.ycor() - 10
+    if y < -250:
+        y = -250
+    rocket_b.sety(y)
+
+window.listen()
+window.onkeypress(move_up, "w")
+window.onkeypress(move_down, "s")
+window.onkeypress(move_up_b, "Up")
+window.onkeypress(move_down_b, "Down")
+
+window.mainloop()
