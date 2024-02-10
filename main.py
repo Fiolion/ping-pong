@@ -1,4 +1,5 @@
 import turtle
+from random import choice, randint
 
 window = turtle.Screen()
 window.title("Ping-Pong")
@@ -33,7 +34,7 @@ rocket_a.color('white')
 rocket_a.shape('square')
 rocket_a.shapesize(stretch_len=1,stretch_wid=7)
 rocket_a.penup()
-rocket_a.goto(-350,0)
+rocket_a.goto(-348,0)
 
 rocket_b = turtle.Turtle()
 rocket_b.speed(3)
@@ -41,7 +42,7 @@ rocket_b.shape("square")
 rocket_b.color("white")
 rocket_b.shapesize(stretch_wid=7, stretch_len=1)
 rocket_b.penup()
-rocket_b.goto(344, 0)
+rocket_b.goto(340, 0)
 
 def move_up():
      y  = rocket_a.ycor() + 10
@@ -70,10 +71,40 @@ def move_down_b():
         y = -250
     rocket_b.sety(y)
 
+ball = turtle.Turtle()
+ball.shape('circle')
+ball.speed(0)
+ball.color('blue')
+ball.dx = 3
+ball.dy = -3
+ball.penup()
+
 window.listen()
 window.onkeypress(move_up, "w")
 window.onkeypress(move_down, "s")
 window.onkeypress(move_up_b, "Up")
 window.onkeypress(move_down_b, "Down")
+
+while True:
+    window.update()
+
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    if ball.ycor() >= 250:
+        ball.dy = -ball.dy
+
+    if ball.ycor() <= -250:
+        ball.dy = -ball.dy
+
+    if ball.xcor() >= 350:
+        ball.goto(0,randint(-50,50))
+        ball.dx = choice([-4,-3,-2, 2,3,4])
+        ball.dy = choice([-4,-3,-2, 2,3,4])
+
+    if ball.xcor() <= -350:
+        ball.goto(0,randint(-50,50))
+        ball.dx = choice([-4,-3,-2, 2,3,4])
+        ball.dy = choice([-4,-3,-2, 2,3,4])
 
 window.mainloop()
